@@ -1,6 +1,8 @@
 package com.yunyd.springboottemplate.utils;
 
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -31,6 +33,12 @@ import org.springframework.web.multipart.MultipartFile;
  * @date 2024/7/3
  */
 public class EmailsUtils {
+
+    // 定义一个邮箱格式的正则表达式
+    private static final String EMAIL_PATTERN =
+            "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    //将定义的正则表达式 EMAIL_PATTERN 编译成一个 Pattern 对象
+    private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 
     /**
      * 阿里邮箱 发送邮件
@@ -102,6 +110,18 @@ public class EmailsUtils {
         if (multipartFile.getSize() > Ten_M){
             throw new BusinessException(ErrorCode.SYSTEM_ERROR.getCode(),"附件大小不能超过10MB");
         }
+    }
+
+    /**
+     * 校验邮箱账号格式是否合规 （只能校验格式，不能校验出是否真的有这个邮箱地址）
+     * @param emailAddress
+     */
+    public static boolean validEmailAddress(String emailAddress){
+        if (StringUtils.isBlank(emailAddress)){
+            return false;
+        }
+        Matcher matcher = pattern.matcher(emailAddress);
+        return matcher.matches();
     }
 
 }
