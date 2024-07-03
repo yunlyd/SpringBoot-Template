@@ -96,7 +96,7 @@ public class EmailsUtils {
      * 校验附件大小是否合法
      * @param multipartFile
      */
-    public void validFile(MultipartFile multipartFile){
+    public static void validFile(MultipartFile multipartFile){
         // 附件大小 不超过10M
         final long Ten_M = 10 * 1024 * 1024; // 10 MB
         if (multipartFile.getSize() > Ten_M){
